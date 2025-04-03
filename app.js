@@ -31,10 +31,11 @@ app.use(
 );
 app.use(flash());
 
-// Middleware to pass flash messages to views
-app.use(function (req, res, next) {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
+app.use((req, res, next) => {
+  res.locals.messages = {
+    success: req.flash('success'),
+    error: req.flash('error'),
+  };
   next();
 });
 

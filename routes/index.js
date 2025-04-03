@@ -8,23 +8,33 @@ const isUserLoggedIn = require('../middlewares/user');
 // ********* USER's GET ROUTES ********* //
 
 // Home Page
-router.get('/', isUserLoggedIn, function (req, res, next) {
+router.get('/', isUserLoggedIn, function (req, res) {
   res.render('index', { user: req.session.user || null });
 });
 
 // User's Registration Page
-router.get('/userRegister', async (req, res) => {
+router.get('/userRegister', (req, res) => {
   res.render('userRegister');
 });
 
 // User's Login Page
-router.get('/userLogin', async (req, res) => {
+router.get('/userLogin', (req, res) => {
   res.render('userLogin');
+});
+
+// Profile Update Page
+router.get('/profileUpdate', isUserLoggedIn, async (req, res) => {
+  const user = await User.findById(req.session.user._id);
+  res.render('profileUpdate', {
+    user,
+    success: req.flash('success'),
+    error: req.flash('error'),
+  });
 });
 
 // ************ USER's POST ROUTES ********* //
 
-// User's Registration
+// User Registration
 router.post('/register', async (req, res) => {
   try {
     const { name, username, userID, email, password } = req.body;
@@ -61,15 +71,13 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// User's Login
+// User Login
 router.post('/login', async (req, res) => {
   try {
     const { userID, username, password } = req.body;
 
-    // Find user by either userID or username
-    const user = await User.findOne({
-      $or: [{ userID: userID }, { username: username }],
-    });
+    // Find user by userID or username
+    const user = await User.findOne({ $or: [{ userID }, { username }] });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       req.flash('error', 'Invalid User ID, Username, or Password.');
@@ -86,8 +94,71 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// User's Logout
-// This route will destroy the session and redirect to the login page
+// User's Profile Update Route
+router.post('/profileUpdate', isUserLoggedIn, async (req, res) => {
+  try {
+    const {
+      name,
+      username,
+      userID,
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    } = req.body;
+    const userId = req.session.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      req.flash('error', 'User not found.');
+      return res.redirect('/profileUpdate');
+    }
+
+    if (
+      currentPassword &&
+      !(await bcrypt.compare(currentPassword, user.password))
+    ) {
+      req.flash('error', 'Current password is incorrect.');
+      return res.redirect('/profileUpdate');
+    }
+
+    const existingUser = await User.findOne({
+      $or: [{ username }, { userID }],
+      _id: { $ne: userId },
+    });
+
+    if (existingUser) {
+      req.flash(
+        'error',
+        'Username or User ID already exists. Please choose another one.'
+      );
+      return res.redirect('/profileUpdate');
+    }
+
+    const updateFields = { name, username, userID };
+
+    if (newPassword || confirmPassword) {
+      if (newPassword !== confirmPassword) {
+        req.flash('error', 'New password and confirm password do not match.');
+        return res.redirect('/profileUpdate');
+      }
+      updateFields.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+      new: true,
+    });
+    req.session.user = updatedUser;
+
+    req.flash('success', 'Profile updated successfully!');
+    res.redirect('/profileUpdate');
+  } catch (error) {
+    console.error(error);
+    req.flash('error', 'Failed to update profile.');
+    res.redirect('/profileUpdate');
+  }
+});
+
+// User Logout
 router.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {

@@ -9,40 +9,6 @@
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet" />
-    <style>
-      .flash-message {
-        display: none;
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-align: center;
-        font-weight: bold;
-        animation: fadeOut 5s ease-in-out;
-      }
-      .flash-success {
-        background-color: #28a745;
-        color: white;
-      }
-      .flash-error {
-        background-color: #dc3545;
-        color: white;
-      }
-      @keyframes fadeOut {
-        0% {
-          opacity: 1;
-        }
-        80% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0;
-          display: none;
-        }
-      }
-    </style>
   </head>
   <body>
     <div
@@ -51,12 +17,11 @@
         class="card shadow p-4"
         style="width: 400px">
         <h3 class="text-center">User Registration</h3>
-
         <!-- Flash Messages -->
-        <% if (error) { %>
-        <div class="flash-message flash-error"><%= error %></div>
-        <% } %> <% if (success) { %>
-        <div class="flash-message flash-success"><%= success %></div>
+        <% if (messages.success && messages.success.length > 0) { %>
+        <div class="alert alert-success"><%= messages.success %></div>
+        <% } %> <% if (messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger"><%= messages.error %></div>
         <% } %>
 
         <!-- Registration Form -->
@@ -95,14 +60,14 @@
             <label
               for="userID"
               class="form-label"
-              >userID</label
+              >User ID</label
             >
             <input
               type="text"
               class="form-control"
               id="userID"
               name="userID"
-              placeholder="Create a userID"
+              placeholder="Create a user ID"
               required />
           </div>
           <div class="mb-3">
@@ -148,16 +113,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // Flash message auto-hide
       document.addEventListener('DOMContentLoaded', function () {
-        let flashMessages = document.querySelectorAll('.flash-message');
-        flashMessages.forEach(msg => {
-          if (msg.textContent.trim() !== '') {
-            msg.style.display = 'block';
-            setTimeout(() => {
-              msg.style.display = 'none';
-            }, 5000);
-          }
-        });
+        setTimeout(() => {
+          document
+            .querySelectorAll('.flash-message')
+            .forEach(msg => msg.remove());
+        }, 5000);
       });
     </script>
   </body>
