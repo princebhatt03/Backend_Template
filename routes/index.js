@@ -1,76 +1,88 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('../db/db');
-const bcrypt = require('bcrypt');
-const Admin = require('../models/admin');
 const isUserLoggedIn = require('../middlewares/user');
 const isAdminLoggedIn = require('../middlewares/admin');
 const userController = require('../controllers/user.controller');
 const adminController = require('../controllers/admin.controller');
 
 // ********* Home Page ********* //
-
-router.get('/', (req, res) => {
-  res.render('index');
-});
+router.get('/', (req, res) => res.render('index'));
 
 // ********* USER's GET ROUTES ********* //
 
 // User's Home Page
 router.get('/userHome', isUserLoggedIn, userController().homePage);
 
-// User's Registration Page
+// User Registration
 router.get('/userRegister', userController().userRegisterPage);
 
-// User's Login Page
+// User Login
 router.get('/userLogin', userController().userLoginPage);
 
-// Profile Update Page
+// User Profile
 router.get(
   '/profileUpdate',
   isUserLoggedIn,
   userController().profileUpdatePage
 );
 
-// ************ USER's POST ROUTES ********* //
+// ********* USER's POST ROUTES ********* //
 
-// User Registration
+// User Registration Route
 router.post('/register', userController().userRegister);
 
-// User Login
+// User Login Route
 router.post('/login', userController().userLogin);
 
-// User's Profile Update Route
+// User Profile Update
 router.post('/profileUpdate', isUserLoggedIn, userController().profileUpdate);
+
+// User Account Deletion
+router.post('/deleteAccount', isUserLoggedIn, userController().userDelete);
 
 // User Logout
 router.get('/logout', userController().userLogout);
 
-// ******** ADMIN's GET ROUTES ********* //
+// ********* ADMIN's GET ROUTES ********* //
 
 // Admin Home Page
 router.get('/adminHome', isAdminLoggedIn, adminController().adminHomePage);
 
-// Admin Registration Page
+// Admin Registration
 router.get('/adminRegister', adminController().adminRegisterPage);
 
-// Admin Login Page
+// Admin Login
 router.get('/adminLogin', adminController().adminLoginPage);
 
-// Admin Login Page
+// Admin Profile
 router.get(
   '/adminProfile',
   isAdminLoggedIn,
   adminController().adminProfilePage
 );
 
-// ******* ADMIN's POST ROUTES ********* //
+// ******** Admin's POST ROUTES ********* //
 
-// Admin Registration
+// Admin Registration Route
 router.post('/adminRegister', adminController().adminRegister);
 
-// Admin Login
+// Admin Login Route
 router.post('/adminLogin', adminController().adminLogin);
+
+// Admin Profile Update Route
+router.post(
+  '/adminProfileUpdate',
+  isAdminLoggedIn,
+  adminController().updateAdminProfile
+);
+
+// Admin Delete Route
+router.post(
+  '/adminDeleteAccount',
+  isAdminLoggedIn,
+  adminController().adminDelete
+);
 
 // Admin Logout
 router.get('/adminLogout', adminController().adminLogout);

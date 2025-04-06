@@ -22,12 +22,18 @@ function userController() {
 
     // Profile Update Page
     async profileUpdatePage(req, res) {
-      const user = await User.findById(req.session.user._id);
-      res.render('user/profileUpdate', {
-        user,
-        success: req.flash('success'),
-        error: req.flash('error'),
-      });
+      try {
+        const user = await User.findById(req.session.user._id);
+        res.render('user/profileUpdate', {
+          user,
+          success: req.flash('success'),
+          error: req.flash('error'),
+        });
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        req.flash('error', 'Failed to load profile.');
+        res.redirect('/userHome');
+      }
     },
 
     // ********* USER's POST ROUTES ********* //
@@ -65,7 +71,7 @@ function userController() {
         req.flash('success', 'Registration successful! You can now log in.');
         res.redirect('/userLogin');
       } catch (error) {
-        console.error(error);
+        console.error('Registration Error:', error);
         req.flash('error', 'Something went wrong, please try again.');
         res.redirect('/userRegister');
       }
@@ -92,7 +98,7 @@ function userController() {
         req.session.user = user;
         res.redirect('/userHome');
       } catch (error) {
-        console.error(error);
+        console.error('Login Error:', error);
         req.flash('error', 'Something went wrong, please try again.');
         res.redirect('/userLogin');
       }
@@ -159,29 +165,60 @@ function userController() {
         req.flash('success', 'Profile updated successfully!');
         res.redirect('/profileUpdate');
       } catch (error) {
-        console.error(error);
+        console.error('Profile Update Error:', error);
         req.flash('error', 'Failed to update profile.');
+        res.redirect('/profileUpdate');
+      }
+    },
+
+    // User Account Deletion Controller
+    async userDelete(req, res) {
+      try {
+        const { deletePassword } = req.body;
+        const userID = req.session.user?._id; 
+
+        if (!userID) {
+          req.flash('error', 'Unauthorized access.');
+          return res.redirect('/userLogin'); 
+        }
+
+        const user = await User.findById(userID);
+        if (!user) {
+          req.flash('error', 'User not found.');
+          return res.redirect('/profileUpdate');
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          deletePassword,
+          user.password
+        );
+        if (!isPasswordValid) {
+          req.flash('error', 'Incorrect password.');
+          return res.redirect('/profileUpdate'); 
+        }
+
+        await User.findByIdAndDelete(userID);
+        // req.session.destroy(); 
+        req.flash('success', 'Account deleted successfully.');
+        res.redirect('/userRegister');
+      } catch (error) {
+        console.error(error);
+        req.flash('error', 'Failed to delete account.');
         res.redirect('/profileUpdate');
       }
     },
 
     // User Logout Controller
     async userLogout(req, res) {
-      try {
-        req.session.destroy(err => {
-          if (err) {
-            console.error(err);
-            req.flash('error', 'Something went wrong, please try again.');
-            return res.redirect('/userHome');
-          }
-          res.clearCookie('connect.sid');
-          res.redirect('/userLogin');
-        });
-      } catch (error) {
-        console.error(error);
-        req.flash('error', 'Something went wrong, please try again.');
-        res.redirect('/userHome');
-      }
+      req.session.destroy(err => {
+        if (err) {
+          console.error('Logout Error:', err);
+          req.flash('error', 'Logout failed, please try again.');
+          return res.redirect('/userHome');
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/userLogin');
+      });
     },
   };
 }

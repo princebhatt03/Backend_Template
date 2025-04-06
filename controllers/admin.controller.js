@@ -21,8 +21,23 @@ function adminController() {
     },
 
     // Admin Profile Page
-    adminProfilePage(req, res) {
-      res.render('admin/adminProfile');
+    async adminProfilePage(req, res) {
+      try {
+        const admin = await Admin.findById(req.session.admin._id);
+        if (!admin) {
+          req.flash('error', 'Admin not found.');
+          return res.redirect('/adminDashboard');
+        }
+        res.render('admin/adminProfile', {
+          admin,
+          success: req.flash('success'),
+          error: req.flash('error'),
+        });
+      } catch (error) {
+        console.error('Error fetching admin data:', error);
+        req.flash('error', 'Something went wrong. Please try again.');
+        res.redirect('/adminHome');
+      }
     },
 
     // ******** ADMIN's POST ROUTES ********* //
@@ -106,6 +121,33 @@ function adminController() {
       }
     },
 
+    async updateAdminProfile(req, res) {
+      const { adminName, adminUsername, adminID, email } = req.body;
+
+      // Basic validation
+      if (!adminName || !adminUsername || !adminID || !email) {
+        req.flash('error', 'All fields are required.');
+        return res.redirect('/adminProfile');
+      }
+
+      try {
+        // Update admin profile
+        await Admin.findByIdAndUpdate(req.session.admin._id, {
+          adminName,
+          adminUsername,
+          adminID,
+          email,
+        });
+
+        req.flash('success', 'Profile updated successfully!');
+        res.redirect('/adminProfile');
+      } catch (err) {
+        console.error('Admin Profile Update Error:', err);
+        req.flash('error', 'Something went wrong, please try again.');
+        res.redirect('/adminProfile');
+      }
+    },
+
     // Admin Logout Controller
     async adminLogout(req, res) {
       req.session.destroy(err => {
@@ -115,6 +157,43 @@ function adminController() {
         }
         res.redirect('/adminLogin');
       });
+    },
+
+    // Admin Account Deletion Controller
+    async adminDelete(req, res) {
+      try {
+        const { deletePassword } = req.body;
+        const adminId = req.session.admin?._id; // Ensure session exists
+
+        if (!adminId) {
+          req.flash('error', 'Unauthorized access.');
+          return res.redirect('/adminLogin'); // Redirect if session is missing
+        }
+
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
+          req.flash('error', 'Admin not found.');
+          return res.redirect('/adminProfile');
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          deletePassword,
+          admin.password
+        );
+        if (!isPasswordValid) {
+          req.flash('error', 'Incorrect password.');
+          return res.redirect('/adminProfile'); // Redirecting to adminProfile
+        }
+
+        await Admin.findByIdAndDelete(adminId);
+        // req.session.destroy(); // Destroy session after deletion
+        req.flash('success', 'Account deleted successfully.');
+        res.redirect('/adminRegister');
+      } catch (error) {
+        console.error(error);
+        req.flash('error', 'Failed to delete account.');
+        res.redirect('/adminProfile');
+      }
     },
   };
 }
