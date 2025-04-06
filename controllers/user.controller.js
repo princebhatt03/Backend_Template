@@ -5,25 +5,25 @@ function userController() {
   return {
     // ******** USER's GET ROUTES ********* //
 
-    // Home Page
+    // User's Home Page
     homePage(req, res) {
-      res.render('index', { user: req.session.user || null });
+      res.render('user/userHome', { user: req.session.user || null });
     },
 
     // User Registration Page
     userRegisterPage(req, res) {
-      res.render('userRegister');
+      res.render('user/userRegister');
     },
 
     // User Login Page
     userLoginPage(req, res) {
-      res.render('userLogin');
+      res.render('user/userLogin');
     },
 
     // Profile Update Page
     async profileUpdatePage(req, res) {
       const user = await User.findById(req.session.user._id);
-      res.render('profileUpdate', {
+      res.render('user/profileUpdate', {
         user,
         success: req.flash('success'),
         error: req.flash('error'),
@@ -90,7 +90,7 @@ function userController() {
 
         // Set session and redirect
         req.session.user = user;
-        res.redirect('/');
+        res.redirect('/userHome');
       } catch (error) {
         console.error(error);
         req.flash('error', 'Something went wrong, please try again.');
@@ -172,7 +172,7 @@ function userController() {
           if (err) {
             console.error(err);
             req.flash('error', 'Something went wrong, please try again.');
-            return res.redirect('/');
+            return res.redirect('/userHome');
           }
           res.clearCookie('connect.sid');
           res.redirect('/userLogin');
@@ -180,7 +180,7 @@ function userController() {
       } catch (error) {
         console.error(error);
         req.flash('error', 'Something went wrong, please try again.');
-        res.redirect('/');
+        res.redirect('/userHome');
       }
     },
   };

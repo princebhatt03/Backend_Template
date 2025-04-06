@@ -5,78 +5,74 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>Welcome | Home</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      /* Custom Styles */
+      body {
+        font-family: 'Arial', sans-serif;
+        background: url('https://source.unsplash.com/1600x900/?technology')
+          no-repeat center center/cover;
+        height: 100vh;
+        color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .hero-section {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 50px;
+        border-radius: 10px;
+      }
+      .btn-custom {
+        width: 200px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .btn-custom:hover {
+        transform: scale(1.1);
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a
-          class="navbar-brand"
-          href="/"
-          >Dashboard</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse"
-          id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <% if (user) { %>
-            <li class="nav-item">
-              <span class="nav-link text-white">Welcome, <%= user.name %></span>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white"
-                href="/profileUpdate"
-                >Profile</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white"
-                href="/logout"
-                >Logout</a
-              >
-            </li>
-            <% } else { %>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white"
-                href="/userLogin"
-                >Login</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white"
-                href="/userRegister"
-                >Register</a
-              >
-            </li>
-            <% } %>
-          </ul>
+    <div class="container">
+      <div class="hero-section">
+        <h1 class="mb-3">Welcome to Our Platform</h1>
+        <p class="lead">
+          A secure and interactive platform for users and admins
+        </p>
+
+        <!-- User & Admin Buttons -->
+        <div class="mt-4">
+          <a
+            href="/userLogin"
+            class="btn btn-primary btn-lg btn-custom m-2"
+            >User Login</a
+          >
+          <a
+            href="/userRegister"
+            class="btn btn-success btn-lg btn-custom m-2"
+            >User Register</a
+          >
+        </div>
+        <div class="mt-3">
+          <a
+            href="/adminLogin"
+            class="btn btn-warning btn-lg btn-custom m-2"
+            >Admin Login</a
+          >
+          <a
+            href="/adminRegister"
+            class="btn btn-danger btn-lg btn-custom m-2"
+            >Admin Register</a
+          >
         </div>
       </div>
-    </nav>
-
-    <div class="container mt-4">
-      <!-- Flash Messages -->
-      <% if (messages.success && messages.success.length > 0) { %>
-      <div class="alert alert-success"><%= messages.success %></div>
-      <% } %> <% if (messages.error && messages.error.length > 0) { %>
-      <div class="alert alert-danger"><%= messages.error %></div>
-      <% } %>
-
-      <h1 class="text-center">Welcome to the User Dashboard</h1>
     </div>
   </body>
 </html>

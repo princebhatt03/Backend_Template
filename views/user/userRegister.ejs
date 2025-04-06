@@ -5,7 +5,7 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
-    <title>User Login</title>
+    <title>User Registration</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet" />
@@ -16,7 +16,7 @@
       <div
         class="card shadow p-4"
         style="width: 400px">
-        <h3 class="text-center">User Login</h3>
+        <h3 class="text-center">User Registration</h3>
         <!-- Flash Messages -->
         <% if (messages.success && messages.success.length > 0) { %>
         <div class="alert alert-success"><%= messages.success %></div>
@@ -24,22 +24,22 @@
         <div class="alert alert-danger"><%= messages.error %></div>
         <% } %>
 
-        <!-- Login Form -->
+        <!-- Registration Form -->
         <form
-          action="/login"
+          action="/register"
           method="POST">
           <div class="mb-3">
             <label
-              for="userID"
+              for="name"
               class="form-label"
-              >User ID</label
+              >Full Name</label
             >
             <input
               type="text"
               class="form-control"
-              id="userID"
-              name="userID"
-              placeholder="Enter your User ID"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
               required />
           </div>
           <div class="mb-3">
@@ -53,7 +53,35 @@
               class="form-control"
               id="username"
               name="username"
-              placeholder="Enter your Username"
+              placeholder="Choose a username"
+              required />
+          </div>
+          <div class="mb-3">
+            <label
+              for="userID"
+              class="form-label"
+              >User ID</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="userID"
+              name="userID"
+              placeholder="Create a user ID"
+              required />
+          </div>
+          <div class="mb-3">
+            <label
+              for="email"
+              class="form-label"
+              >Email</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
               required />
           </div>
           <div class="mb-3">
@@ -67,18 +95,22 @@
               class="form-control"
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Choose a password"
               required />
           </div>
           <button
             type="submit"
-            class="btn btn-primary w-100">
-            Login
+            class="btn btn-success w-100">
+            Register
           </button>
         </form>
 
         <p class="text-center mt-3">
-          Don't have an account? <a href="/userRegister">Register here</a>
+          Already have an User's account? <a href="/userLogin">Login here</a>
+        </p>
+        <p class="text-center">or</p>
+        <p class="text-center">
+          Admin Register <a href="/adminRegister"> Register as an Admin</a>
         </p>
       </div>
     </div>
