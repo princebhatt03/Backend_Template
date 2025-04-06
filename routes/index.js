@@ -13,13 +13,17 @@ const userController = require('../controllers/user.controller');
 router.get('/', isUserLoggedIn, userController().homePage);
 
 // User's Registration Page
-router.get('/userRegister', userController().userRegister);
+router.get('/userRegister', userController().userRegisterPage);
 
 // User's Login Page
-router.get('/userLogin', userController().userLogin);
+router.get('/userLogin', userController().userLoginPage);
 
 // Profile Update Page
-router.get('/profileUpdate', isUserLoggedIn, userController().profileUpdate);
+router.get(
+  '/profileUpdate',
+  isUserLoggedIn,
+  userController().profileUpdatePage
+);
 
 // ************ USER's POST ROUTES ********* //
 

@@ -6,22 +6,22 @@ function userController() {
     // ******** USER's GET ROUTES ********* //
 
     // Home Page
-    async homePage(req, res) {
+    homePage(req, res) {
       res.render('index', { user: req.session.user || null });
     },
 
     // User Registration Page
-    async userRegister(req, res) {
+    userRegisterPage(req, res) {
       res.render('userRegister');
     },
 
     // User Login Page
-    async userLogin(req, res) {
+    userLoginPage(req, res) {
       res.render('userLogin');
     },
 
     // Profile Update Page
-    async profileUpdate(req, res) {
+    async profileUpdatePage(req, res) {
       const user = await User.findById(req.session.user._id);
       res.render('profileUpdate', {
         user,
