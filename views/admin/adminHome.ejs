@@ -134,7 +134,6 @@
               <form
                 id="deleteForm"
                 method="POST">
-                <!-- If using method-override middleware -->
                 <input
                   type="hidden"
                   name="_method"
@@ -159,8 +158,8 @@
       <!-- JavaScript -->
       <script>
         function showDeleteModal(postId, postName) {
-          document.getElementById('productName').innerText = postName; // Fix the incorrect ID reference
-          document.getElementById('deleteForm').action = '/delete/' + postId; // Set the form action to the delete route with the post ID
+          document.getElementById('productName').innerText = postName;
+          document.getElementById('deleteForm').action = '/delete/' + postId;
           var deleteModal = new bootstrap.Modal(
             document.getElementById('deleteModal')
           );

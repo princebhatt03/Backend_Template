@@ -100,8 +100,25 @@ router.post(
   productController.productUpload
 );
 
+// Routes for Delete Product
 router.post('/delete/:id', isAdminLoggedIn, productController.deleteProduct);
 
+// Admin Logout Route
 router.get('/adminLogout', adminController().adminLogout);
+
+// Route to show edit form
+router.get(
+  '/editProduct/:id',
+  isAdminLoggedIn,
+  productController.editProductPage
+);
+
+// Route to handle product update with image upload
+router.post(
+  '/updateProduct/:id',
+  isAdminLoggedIn,
+  upload.single('image'),
+  productController.updateProduct
+);
 
 module.exports = router;

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="card shadow p-4">
+        <h2 class="text-center text-primary mb-4">Edit Product</h2>
+
+        <% if (messages.error) { %>
+        <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %> <% if (messages.success) { %>
+        <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+
+        <form
+          action="/updateProduct/<%= product._id %>"
+          method="POST"
+          enctype="multipart/form-data">
+          <div class="row">
+            <!-- Product Name -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label
+                  for="name"
+                  class="form-label fw-bold"
+                  >Product Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  value="<%= product.name %>"
+                  required />
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label
+                  for="price"
+                  class="form-label fw-bold"
+                  >Price ($)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  name="price"
+                  value="<%= product.price %>"
+                  required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label
+              for="description"
+              class="form-label fw-bold"
+              >Description</label
+            >
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              rows="3"
+              required>
+<%= product.description %></textarea
+            >
+          </div>
+
+          <!-- Image Preview -->
+          <div class="mb-3 text-center">
+            <% if (product.image) { %>
+            <img
+              src="<%= product.image %>"
+              alt="Product Image"
+              class="img-thumbnail"
+              width="200" />
+            <% } else { %>
+            <p class="text-muted">No image available</p>
+            <% } %>
+          </div>
+
+          <!-- Upload New Image -->
+          <div class="mb-3">
+            <label
+              for="image"
+              class="form-label fw-bold"
+              >Upload New Image</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              id="image"
+              name="image"
+              accept="image/*" />
+            <small class="text-muted"
+              >Leave blank to keep the existing image</small
+            >
+          </div>
+
+          <!-- Buttons -->
+          <div class="text-center">
+            <button
+              type="submit"
+              class="btn btn-success px-4">
+              Update Product
+            </button>
+            <a
+              href="/admin/products"
+              class="btn btn-secondary px-4"
+              >Cancel</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

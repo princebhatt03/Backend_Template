@@ -59,6 +59,7 @@ const productController = {
     }
   },
 
+  // Product Delete Route Controller
   async deleteProduct(req, res) {
     const { id } = req.params;
 
@@ -78,6 +79,63 @@ const productController = {
       console.error('Error deleting product:', error);
       req.flash('error', 'An error occurred while deleting the product.');
       res.redirect('/adminHome');
+    }
+  },
+
+  // Render the edit product page
+  async editProductPage(req, res) {
+    try {
+      const { id } = req.params;
+      const product = await Product.findById(id);
+
+      if (!product) {
+        req.flash('error', 'Product not found.');
+        return res.redirect('/adminHome');
+      }
+
+      res.render('admin/editProduct', { product, messages: req.flash() });
+    } catch (error) {
+      console.error('Error fetching product for edit:', error);
+      req.flash('error', 'Error loading edit page.');
+      res.redirect('/adminHome');
+    }
+  },
+
+  // Update product details
+  async updateProduct(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, price, description } = req.body;
+      let updatedProduct = { name, price, description };
+
+      if (req.file) {
+        if (process.env.USE_CLOUDINARY === 'true') {
+          try {
+            // Upload new image to Cloudinary
+            const result = await cloudinary.uploader.upload(req.file.path, {
+              folder: 'products',
+              use_filename: true,
+              unique_filename: false,
+            });
+            updatedProduct.image = result.secure_url;
+          } catch (cloudError) {
+            console.error('Cloudinary Upload Error:', cloudError);
+            req.flash('error', 'Failed to upload image to Cloudinary.');
+            return res.redirect(`/editProduct/${id}`);
+          }
+        } else {
+          updatedProduct.image = `/uploads/${req.file.filename}`;
+        }
+      }
+
+      await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+
+      req.flash('success', 'Product updated successfully!');
+      res.redirect('/adminHome');
+    } catch (error) {
+      console.error('Error updating product:', error);
+      req.flash('error', 'Error updating product.');
+      res.redirect(`/editProduct/${id}`);
     }
   },
 };
