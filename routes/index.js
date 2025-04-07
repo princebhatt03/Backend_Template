@@ -7,6 +7,7 @@ const userController = require('../controllers/user.controller');
 const adminController = require('../controllers/admin.controller');
 const productController = require('../controllers/product.controller');
 const upload = require('../config/multer.config');
+const Product = require('../models/product');
 
 // ********* Home Page ********* //
 router.get('/', (req, res) => res.render('index'));
@@ -89,21 +90,17 @@ router.post(
 // ******** Products Management Routes ********* //
 
 // Products Render GET Routes
-router.get('/products', isAdminLoggedIn, productController().productPage);
+router.get('/products', isAdminLoggedIn, productController.productPage);
 
 // Products Upload POST Route
 router.post(
   '/uploadProduct',
   isAdminLoggedIn,
   upload.single('productImage'),
-  productController().productUpload
+  productController.productUpload
 );
 
-router.delete(
-  '/deleteProduct/:id',
-  isAdminLoggedIn,
-  productController().deleteProduct
-);
+router.post('/delete/:id', isAdminLoggedIn, productController.deleteProduct);
 
 router.get('/adminLogout', adminController().adminLogout);
 

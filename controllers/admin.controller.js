@@ -14,14 +14,11 @@ function adminController() {
           req.flash('error', 'Admin not authenticated.');
           return res.redirect('/adminLogin');
         }
-
-        // Fetch all products from the database
         const posts = await Product.find({});
 
         res.render('admin/adminHome', {
           admin,
-          posts, // ✅ Passing `posts` to the EJS view
-          messages: req.flash(),
+          posts,
         });
       } catch (error) {
         console.error('Error fetching products:', error);
