@@ -5,6 +5,7 @@
 
 - ⚓Tools : **Git/GitHub**
 
+<h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://stackoverflow.com/users/28868651/prince-bhatt" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/stack-overflow.svg" alt="28868651/prince-bhatt" height="30" width="40" /></a>
 <a href="https://instagram.com/prince16.03" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="prince16.03" height="30" width="40" /></a>
