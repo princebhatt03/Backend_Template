@@ -149,49 +149,41 @@
       >
       <% } %>
     </div>
-
-    <!-- Featured Products Section -->
-    <div class="products-section">
-      <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="container mt-5">
+      <h3 class="text-center">Available Products</h3>
       <div class="row">
-        <!-- Product 1 -->
-        <div class="col-md-4 mb-4">
-          <div class="product-card">
+        <% if (posts && posts.length > 0) { %> <% posts.forEach((post) => { %>
+        <div class="col-md-4 col-sm-6 mb-4">
+          <div class="card shadow-sm">
+            <% if (post.image) { %>
             <img
-              src="../../images/img2.jpg"
+              src="<%= post.image %>"
+              class="card-img-top"
               alt="Product Image" />
-            <h5>Smart Watch</h5>
-            <p>Latest smartwatch with fitness tracking.</p>
-            <p><strong>Price: ₹2,999</strong></p>
-            <button class="btn btn-success">Add to Cart</button>
+            <% } else { %>
+            <img
+              src="/images/placeholder.png"
+              class="card-img-top"
+              alt="No Image" />
+            <% } %>
+            <div class="card-body text-center">
+              <h5 class="card-title"><%= post.name %></h5>
+              <p class="card-text"><%= post.description %></p>
+              <h6 class="text-success">$<%= post.price %></h6>
+              <a
+                href="/product/<%= post._id %>"
+                class="btn btn-primary"
+                >View Details</a
+              >
+              <button class="btn btn-success">Add to Cart</button>
+            </div>
           </div>
         </div>
-
-        <!-- Product 2 -->
-        <div class="col-md-4 mb-4">
-          <div class="product-card">
-            <img
-              src="../../images/img2.jpg"
-              alt="Product Image" />
-            <h5>Wireless Earbuds</h5>
-            <p>Noise-canceling earbuds with long battery life.</p>
-            <p><strong>Price: ₹1,799</strong></p>
-            <button class="btn btn-success">Add to Cart</button>
-          </div>
+        <% }); %> <% } else { %>
+        <div class="col-12 text-center">
+          <p>No products available.</p>
         </div>
-
-        <!-- Product 3 -->
-        <div class="col-md-4 mb-4">
-          <div class="product-card">
-            <img
-              src="../../images/img2.jpg"
-              alt="Product Image" />
-            <h5>Gaming Mouse</h5>
-            <p>High-precision gaming mouse with RGB lights.</p>
-            <p><strong>Price: ₹999</strong></p>
-            <button class="btn btn-success">Add to Cart</button>
-          </div>
-        </div>
+        <% } %>
       </div>
     </div>
 

@@ -1,15 +1,23 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const postModel = require('../models/product');
 
 function userController() {
   return {
     // ******** USER's GET ROUTES ********* //
 
-    // User's Home Page
-    homePage(req, res) {
-      res.render('user/userHome', { user: req.session.user || null });
+    async homePage(req, res) {
+      try {
+        const posts = await postModel.find({});
+        res.render('user/userHome', {
+          user: req.session.user || null,
+          posts,
+        });
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).send('Internal Server Error');
+      }
     },
-
     // User Registration Page
     userRegisterPage(req, res) {
       res.render('user/userRegister');
