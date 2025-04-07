@@ -175,11 +175,11 @@ function userController() {
     async userDelete(req, res) {
       try {
         const { deletePassword } = req.body;
-        const userID = req.session.user?._id; 
+        const userID = req.session.user?._id;
 
         if (!userID) {
           req.flash('error', 'Unauthorized access.');
-          return res.redirect('/userLogin'); 
+          return res.redirect('/userLogin');
         }
 
         const user = await User.findById(userID);
@@ -194,11 +194,11 @@ function userController() {
         );
         if (!isPasswordValid) {
           req.flash('error', 'Incorrect password.');
-          return res.redirect('/profileUpdate'); 
+          return res.redirect('/profileUpdate');
         }
 
         await User.findByIdAndDelete(userID);
-        // req.session.destroy(); 
+        // req.session.destroy();
         req.flash('success', 'Account deleted successfully.');
         res.redirect('/userRegister');
       } catch (error) {

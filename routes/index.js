@@ -5,6 +5,8 @@ const isUserLoggedIn = require('../middlewares/user');
 const isAdminLoggedIn = require('../middlewares/admin');
 const userController = require('../controllers/user.controller');
 const adminController = require('../controllers/admin.controller');
+const productController = require('../controllers/product.controller');
+const upload = require('../config/multer.config');
 
 // ********* Home Page ********* //
 router.get('/', (req, res) => res.render('index'));
@@ -16,7 +18,7 @@ router.get('/userHome', isUserLoggedIn, userController().homePage);
 
 // User Registration
 router.get('/userRegister', userController().userRegisterPage);
-
+// product.imageURL;
 // User Login
 router.get('/userLogin', userController().userLoginPage);
 
@@ -84,7 +86,25 @@ router.post(
   adminController().adminDelete
 );
 
-// Admin Logout
+// ******** Products Management Routes ********* //
+
+// Products Render GET Routes
+router.get('/products', isAdminLoggedIn, productController().productPage);
+
+// Products Upload POST Route
+router.post(
+  '/uploadProduct',
+  isAdminLoggedIn,
+  upload.single('productImage'),
+  productController().productUpload
+);
+
+router.delete(
+  '/deleteProduct/:id',
+  isAdminLoggedIn,
+  productController().deleteProduct
+);
+
 router.get('/adminLogout', adminController().adminLogout);
 
 module.exports = router;

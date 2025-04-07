@@ -32,18 +32,197 @@
             class="btn btn-primary"
             >Update Profile</a
           >
-          <!-- <a
-            href="/manageUsers"
-            class="btn btn-warning"
-            >Manage Users</a
-          > -->
           <a
             href="/adminLogout"
             class="btn btn-danger"
             >Logout</a
           >
+          <a
+            href="/products"
+            class="btn btn-warning"
+            >Upload Product</a
+          >
         </div>
       </div>
+
+      <div class="mt-5">
+        <h3>Uploaded Products</h3>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (posts && posts.length > 0) { %> <% posts.forEach((post,
+              index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                  <% if (post.image) { %>
+                  <img
+                    src="<%= post.image %>"
+                    alt="Product Image"
+                    width="80"
+                    class="img-thumbnail" />
+                  <% } else { %>
+                  <img
+                    src="/images/placeholder.png"
+                    alt="No Image"
+                    width="80"
+                    class="img-thumbnail" />
+                  <% } %>
+                </td>
+                <td><%= post.name %></td>
+                <td>$<%= post.price %></td>
+                <td><%= post.description %></td>
+                <td>
+                  <a
+                    href="/editProduct/<%= post._id %>"
+                    class="btn btn-warning btn-sm"
+                    >Edit</a
+                  >
+                  <button
+                    class="btn btn-danger btn-sm"
+                    onclick="showDeleteModal('<%= post._id %>')">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <% }); %> <% } else { %>
+              <tr>
+                <td colspan="6">No products found.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div
+        id="deleteModal"
+        class="modal-overlay">
+        <div class="modal-content">
+          <h3>Are you sure you want to delete this product?</h3>
+          <p>This action cannot be undone.</p>
+          <div class="modal-actions">
+            <button
+              class="btn btn-secondary"
+              onclick="hideDeleteModal()">
+              Cancel
+            </button>
+            <button
+              class="btn btn-danger"
+              id="confirmDeleteBtn">
+              Confirm Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .modal-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          justify-content: center;
+          align-items: center;
+        }
+
+        .modal-content {
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          width: 300px;
+        }
+
+        .modal-actions {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 15px;
+        }
+
+        .btn {
+          padding: 10px 15px;
+          border: none;
+          cursor: pointer;
+        }
+
+        .btn-secondary {
+          background-color: #ccc;
+        }
+
+        .btn-danger {
+          background-color: red;
+          color: white;
+        }
+      </style>
+
+      <script>
+        let deleteProductId = null;
+
+        // Show Delete Modal
+        function showDeleteModal(productId) {
+          deleteProductId = productId;
+          document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        // Hide Delete Modal
+        function hideDeleteModal() {
+          deleteProductId = null;
+          document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // Confirm Delete Product
+        document
+          .getElementById('confirmDeleteBtn')
+          .addEventListener('click', function () {
+            if (deleteProductId) {
+              fetch(`/deleteProduct/${deleteProductId}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    // alert('Product deleted successfully!');
+                    location.reload();
+                  } else {
+                    // alert('Error deleting product.');
+                  }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+            hideDeleteModal();
+          });
+      </script>
+
+      <script>
+        function confirmDelete(postId) {
+          if (confirm('Are you sure you want to delete this product?')) {
+            fetch(`/deleteProduct/${postId}`, { method: 'DELETE' })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  alert('Product deleted successfully!');
+                  location.reload();
+                } else {
+                  alert('Error deleting product.');
+                }
+              })
+              .catch(error => console.error('Error:', error));
+          }
+        }
+      </script>
 
       <button
         type="button"
@@ -52,5 +231,7 @@
         Go Back
       </button>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
