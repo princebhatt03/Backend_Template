@@ -5,12 +5,57 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>Dashboard</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+      body {
+        background: #f8f9fa;
+      }
+      .dashboard-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+      }
+      .flash-message {
+        margin-top: 15px;
+      }
+      .products-section {
+        max-width: 1100px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .product-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        background: #fff;
+      }
+      .product-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .product-card h5 {
+        margin-top: 10px;
+      }
+      .product-card p {
+        color: #555;
+      }
+    </style>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a
@@ -30,22 +75,31 @@
           id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <% if (user) { %>
-            <li class="nav-item">
-              <span class="nav-link text-white">Welcome, <%= user.name %></span>
-            </li>
-            <li class="nav-item">
+            <li class="nav-item dropdown">
               <a
-                class="nav-link text-white"
-                href="/profileUpdate"
-                >Profile</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white"
-                href="/logout"
-                >Logout</a
-              >
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown">
+                Welcome, <%= user.name %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="/profileUpdate"
+                    >Profile</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-danger"
+                    href="/logout"
+                    >Logout</a
+                  >
+                </li>
+              </ul>
             </li>
             <% } else { %>
             <li class="nav-item">
@@ -68,15 +122,79 @@
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <!-- Flash Messages -->
-      <% if (messages.success && messages.success.length > 0) { %>
-      <div class="alert alert-success"><%= messages.success %></div>
-      <% } %> <% if (messages.error && messages.error.length > 0) { %>
-      <div class="alert alert-danger"><%= messages.error %></div>
-      <% } %>
+    <!-- Flash Messages -->
+    <% if (messages.success && messages.success.length > 0) { %>
+    <div class="alert alert-success"><%= messages.success %></div>
+    <% } %> <% if (messages.error && messages.error.length > 0) { %>
+    <div class="alert alert-danger"><%= messages.error %></div>
+    <% } %>
 
-      <h1 class="text-center">Welcome to the User Dashboard</h1>
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+      <h1 class="mb-4">Welcome to Your Dashboard</h1>
+      <p class="lead">
+        Manage your profile, check notifications, and explore features.
+      </p>
+      <% if (user) { %>
+      <a
+        href="/profileUpdate"
+        class="btn btn-primary mt-3"
+        >Go to Profile</a
+      >
+      <% } else { %>
+      <a
+        href="/userLogin"
+        class="btn btn-success mt-3"
+        >Login Now</a
+      >
+      <% } %>
     </div>
+
+    <!-- Featured Products Section -->
+    <div class="products-section">
+      <h2 class="text-center mb-4">Featured Products</h2>
+      <div class="row">
+        <!-- Product 1 -->
+        <div class="col-md-4 mb-4">
+          <div class="product-card">
+            <img
+              src="../../images/img2.jpg"
+              alt="Product Image" />
+            <h5>Smart Watch</h5>
+            <p>Latest smartwatch with fitness tracking.</p>
+            <p><strong>Price: ₹2,999</strong></p>
+            <button class="btn btn-success">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="col-md-4 mb-4">
+          <div class="product-card">
+            <img
+              src="../../images/img2.jpg"
+              alt="Product Image" />
+            <h5>Wireless Earbuds</h5>
+            <p>Noise-canceling earbuds with long battery life.</p>
+            <p><strong>Price: ₹1,799</strong></p>
+            <button class="btn btn-success">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="col-md-4 mb-4">
+          <div class="product-card">
+            <img
+              src="../../images/img2.jpg"
+              alt="Product Image" />
+            <h5>Gaming Mouse</h5>
+            <p>High-precision gaming mouse with RGB lights.</p>
+            <p><strong>Price: ₹999</strong></p>
+            <button class="btn btn-success">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
