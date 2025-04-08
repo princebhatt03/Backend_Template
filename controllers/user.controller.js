@@ -11,6 +11,7 @@ function userController() {
         const posts = await postModel.find({});
         res.render('user/userHome', {
           user: req.session.user || null,
+          // messages: req.flash(),
           posts,
         });
       } catch (error) {
@@ -104,6 +105,7 @@ function userController() {
 
         // Set session and redirect
         req.session.user = user;
+        req.flash('success', 'Login Successful!');
         res.redirect('/userHome');
       } catch (error) {
         console.error('Login Error:', error);
