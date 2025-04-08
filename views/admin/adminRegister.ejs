@@ -9,121 +9,160 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        animation: fadeIn 1.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .card {
+        animation: slideUp 0.8s ease-in-out;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .form-control:focus {
+        border-color: #4facfe;
+        box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+      }
+      .btn-primary {
+        transition: transform 0.2s;
+      }
+      .btn-primary:hover {
+        transform: scale(1.05);
+      }
+      .shake {
+        animation: shake 0.5s ease-in-out;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+        75% {
+          transform: translateX(-5px);
+        }
+      }
+    </style>
   </head>
-  <body class="bg-light">
+  <body class="d-flex justify-content-center align-items-center vh-100">
     <div
-      class="container d-flex justify-content-center align-items-center vh-100">
-      <div
-        class="card p-4 shadow"
-        style="width: 400px">
-        <h3 class="text-center">Admin Registration</h3>
-        <!-- Flash Messages -->
-        <% if (messages.success && messages.success.length > 0) { %>
-        <div class="alert alert-success"><%= messages.success %></div>
-        <% } %> <% if (messages.error && messages.error.length > 0) { %>
-        <div class="alert alert-danger"><%= messages.error %></div>
-        <% } %>
-        <form
-          action="/adminRegister"
-          method="POST">
-          <!-- Admin Name -->
-          <div class="mb-3">
-            <label
-              for="adminName"
-              class="form-label"
-              >Full Name</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="adminName"
-              name="adminName"
-              required
-              placeholder="Enter your full name" />
-          </div>
-
-          <!-- Admin Username -->
-          <div class="mb-3">
-            <label
-              for="adminUsername"
-              class="form-label"
-              >Admin Username</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="adminUsername"
-              name="adminUsername"
-              required
-              placeholder="Enter your username" />
-          </div>
-
-          <!-- Admin ID -->
-          <div class="mb-3">
-            <label
-              for="adminID"
-              class="form-label"
-              >Admin ID</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="adminID"
-              name="adminID"
-              required
-              placeholder="Enter your Admin ID" />
-          </div>
-
-          <!-- Email -->
-          <div class="mb-3">
-            <label
-              for="email"
-              class="form-label"
-              >Email</label
-            >
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-              placeholder="Enter your email" />
-          </div>
-
-          <!-- Password -->
-          <div class="mb-3">
-            <label
-              for="password"
-              class="form-label"
-              >Password</label
-            >
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-              placeholder="Enter your password" />
-          </div>
-
-          <button
-            type="submit"
-            class="btn btn-primary w-100">
-            Register
-          </button>
-        </form>
-
-        <p class="text-center mt-3">
-          Already have an Admin's account? <a href="/adminLogin">Login here</a>
-        </p>
-        <p class="text-center">or</p>
-        <p class="text-center">
-          User Register
-          <a href="/userRegister">Register as a User</a>
-        </p>
-      </div>
+      class="card p-4 shadow-lg"
+      style="width: 400px">
+      <h3 class="text-center">Admin Registration</h3>
+      <!-- Flash Messages -->
+      <% if (messages.success && messages.success.length > 0) { %>
+      <div class="alert alert-success"><%= messages.success %></div>
+      <% } %> <% if (messages.error && messages.error.length > 0) { %>
+      <div class="alert alert-danger shake"><%= messages.error %></div>
+      <% } %>
+      <form
+        action="/adminRegister"
+        method="POST">
+        <div class="mb-3">
+          <label
+            for="adminName"
+            class="form-label"
+            >Full Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="adminName"
+            name="adminName"
+            required
+            placeholder="Enter your full name" />
+        </div>
+        <div class="mb-3">
+          <label
+            for="adminUsername"
+            class="form-label"
+            >Admin Username</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="adminUsername"
+            name="adminUsername"
+            required
+            placeholder="Enter your username" />
+        </div>
+        <div class="mb-3">
+          <label
+            for="adminID"
+            class="form-label"
+            >Admin ID</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="adminID"
+            name="adminID"
+            required
+            placeholder="Enter your Admin ID" />
+        </div>
+        <div class="mb-3">
+          <label
+            for="email"
+            class="form-label"
+            >Email</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email" />
+        </div>
+        <div class="mb-3">
+          <label
+            for="password"
+            class="form-label"
+            >Password</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            required
+            placeholder="Enter your password" />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary w-100">
+          Register
+        </button>
+      </form>
+      <p class="text-center mt-3">
+        Already have an Admin's account? <a href="/adminLogin">Login here</a>
+      </p>
+      <p class="text-center">or</p>
+      <p class="text-center">
+        User Register <a href="/userRegister">Register as a User</a>
+      </p>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

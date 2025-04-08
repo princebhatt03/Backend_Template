@@ -9,19 +9,58 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        transition: transform 0.3s ease-in-out;
+      }
+      .card:hover {
+        transform: scale(1.02);
+      }
+      .btn {
+        transition: all 0.3s ease;
+      }
+      .btn:hover {
+        transform: scale(1.05);
+      }
+      table img {
+        transition: transform 0.3s ease;
+      }
+      table img:hover {
+        transform: scale(1.1);
+      }
+    </style>
   </head>
   <body>
     <div class="container mt-5">
-      <h2 class="text-center">Admin Dashboard</h2>
+      <h2 class="text-center animate__animated animate__fadeInDown">
+        Admin Dashboard
+      </h2>
 
-      <!-- Flash Messages -->
       <% if (messages.success && messages.success.length > 0) { %>
-      <div class="alert alert-success"><%= messages.success %></div>
+      <div class="alert alert-success animate__animated animate__fadeIn">
+        <%= messages.success %>
+      </div>
       <% } %> <% if (messages.error && messages.error.length > 0) { %>
-      <div class="alert alert-danger"><%= messages.error %></div>
+      <div class="alert alert-danger animate__animated animate__fadeIn">
+        <%= messages.error %>
+      </div>
       <% } %>
 
-      <div class="card p-4 shadow">
+      <div class="card p-4 shadow animate__animated animate__zoomIn">
         <h4>Welcome, <%= admin.adminName %>!</h4>
         <p><strong>Username:</strong> <%= admin.adminUsername %></p>
         <p><strong>Admin ID:</strong> <%= admin.adminID %></p>
@@ -45,7 +84,7 @@
         </div>
       </div>
 
-      <div class="mt-5">
+      <div class="mt-5 animate__animated animate__fadeInUp">
         <h3>Uploaded Products</h3>
         <div class="table-responsive">
           <table class="table table-bordered table-hover text-center">
@@ -62,7 +101,7 @@
             <tbody>
               <% if (posts && posts.length > 0) { %> <% posts.forEach((post,
               index) => { %>
-              <tr>
+              <tr class="animate__animated animate__fadeInUp animate__delay-1s">
                 <td><%= index + 1 %></td>
                 <td>
                   <% if (post.image) { %>
@@ -105,7 +144,6 @@
         </div>
       </div>
 
-      <!-- Delete Confirmation Modal -->
       <div
         class="modal fade"
         id="deleteModal"
@@ -155,7 +193,6 @@
         </div>
       </div>
 
-      <!-- JavaScript -->
       <script>
         function showDeleteModal(postId, postName) {
           document.getElementById('productName').innerText = postName;

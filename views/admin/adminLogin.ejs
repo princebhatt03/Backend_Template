@@ -9,14 +9,59 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 1s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .card {
+        width: 400px;
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        background: white;
+        animation: slideIn 0.5s ease-in-out;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .form-control:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 8px rgba(118, 75, 162, 0.5);
+      }
+      .btn {
+        transition: transform 0.2s;
+      }
+      .btn:hover {
+        transform: scale(1.05);
+      }
+    </style>
   </head>
-  <body class="bg-light">
+  <body>
     <div
       class="container d-flex justify-content-center align-items-center vh-100">
-      <div
-        class="card p-4 shadow"
-        style="width: 400px">
+      <div class="card p-4">
         <h3 class="text-center">Admin Login</h3>
+
         <!-- Flash Messages -->
         <% if (messages.success && messages.success.length > 0) { %>
         <div class="alert alert-success"><%= messages.success %></div>
@@ -27,7 +72,6 @@
         <form
           action="/adminLogin"
           method="POST">
-          <!-- Admin ID -->
           <div class="mb-3">
             <label
               for="adminID"
@@ -42,8 +86,6 @@
               required
               placeholder="Enter your Admin ID" />
           </div>
-
-          <!-- Admin Username -->
           <div class="mb-3">
             <label
               for="adminUsername"
@@ -58,8 +100,6 @@
               required
               placeholder="Enter your Admin Username" />
           </div>
-
-          <!-- Password -->
           <div class="mb-3">
             <label
               for="password"
@@ -74,7 +114,6 @@
               required
               placeholder="Enter your password" />
           </div>
-
           <button
             type="submit"
             class="btn btn-primary w-100">
@@ -92,7 +131,6 @@
         </p>
       </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

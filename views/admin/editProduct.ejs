@@ -5,14 +5,53 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Edit Product</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .card {
+        animation: fadeIn 0.8s ease-in-out;
+        border-radius: 12px;
+      }
+      .form-control:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+      }
+      button {
+        transition: all 0.3s ease-in-out;
+      }
+      button:hover {
+        transform: scale(1.05);
+      }
+      img {
+        transition: transform 0.3s ease-in-out;
+      }
+      img:hover {
+        transform: scale(1.1);
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="card shadow p-4">
+    <div class="container">
+      <div class="card shadow p-4 w-75 mx-auto">
         <h2 class="text-center text-primary mb-4">Edit Product</h2>
 
         <% if (messages.error) { %>
@@ -87,7 +126,8 @@
               src="<%= product.image %>"
               alt="Product Image"
               class="img-thumbnail"
-              width="200" />
+              width="200"
+              id="imagePreview" />
             <% } else { %>
             <p class="text-muted">No image available</p>
             <% } %>
@@ -105,7 +145,8 @@
               class="form-control"
               id="image"
               name="image"
-              accept="image/*" />
+              accept="image/*"
+              onchange="previewImage(event)" />
             <small class="text-muted"
               >Leave blank to keep the existing image</small
             >
@@ -127,6 +168,17 @@
         </form>
       </div>
     </div>
+
+    <script>
+      function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const output = document.getElementById('imagePreview');
+          output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
